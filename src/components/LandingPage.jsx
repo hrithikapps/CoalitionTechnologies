@@ -1,16 +1,173 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
-import styles from "../styles/LandingPage.module.css";
+import "../styles/LandingPage.css";
+import HealthCard from "./HealthCard";
+import respiratoryRate from "../assets/respiratory rate/respiratory rate.png";
+import temperature from "../assets/temperature/temperature.png";
+import heartBPM from "../assets/HeartBPM/HeartBPM.png";
+import profilePic from "../assets/profilePic/Layer 2.png";
+import BloodPressureChart from "./BloodPressureChart";
 
 const LandingPage = () => {
+  let [patients, setPatients] = useState([]);
+  const [diastolicValue, setDiastolicValue] = useState(0);
+  const [systolicValue, setSystolicValue] = useState(0);
+  const [systolicLevels, setSystolicLevels] = useState("");
+  const [diastolicLevels, setDiastolicLevels] = useState("");
+  let [averageDiastolic, setAverageDiastolic] = useState(0);
+  let [averageSystolic, setAverageSystolic] = useState(0);
+  let diastolic = [];
+  let systolic = [];
+
+  const getPatientsData = async () => {
+    try {
+      const userName = "coalition";
+      const password = "skills-test";
+      const auth = btoa(`${userName}:${password}`);
+
+      const response = await fetch(
+        "https://fedskillstest.coalitiontechnologies.workers.dev",
+        {
+          headers: {
+            authorization: `Basic ${auth}`,
+          },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setPatients(data);
+        console.log(data);
+      } else {
+        throw new Error("Error Fetching Data");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  //fetching Patients Data
+
+  useEffect(() => {
+    getPatientsData();
+  }, []);
+
+  useEffect(() => {
+    if (patients?.length > 0) {
+      patients[3]?.diagnosis_history.forEach((diagnosis) => {
+        diastolic.push(diagnosis?.blood_pressure?.diastolic?.value);
+        systolic.push(diagnosis?.blood_pressure?.systolic?.value);
+      });
+    }
+
+    const totalDiastolic =
+      diastolic.length > 0 ? diastolic.reduce((acc, curr) => acc + curr, 0) : 0;
+    const totalSystolic =
+      systolic.length > 0 ? systolic.reduce((acc, curr) => acc + curr, 0) : 0;
+
+    setAverageDiastolic(totalDiastolic / diastolic.length);
+    setAverageSystolic(totalSystolic / systolic.length);
+  }, [patients]);
+
+  useEffect(() => {
+    if (patients?.length > 0) {
+      const firstDiagnosis = patients[3]?.diagnosis_history[0];
+
+      if (firstDiagnosis?.blood_pressure) {
+        setSystolicValue(firstDiagnosis.blood_pressure.systolic.value);
+        setDiastolicValue(firstDiagnosis.blood_pressure.diastolic.value);
+        setSystolicLevels(firstDiagnosis.blood_pressure.systolic.levels);
+
+        setDiastolicLevels(firstDiagnosis.blood_pressure.diastolic.levels);
+      }
+    }
+  }, [patients]);
+
   return (
     <>
       <Header />
-      <main>
-        <nav></nav>
-        <section id="allPatients"></section>
+      <main className="flex">
+        <section id="allPatients">
+          <p>Patients</p>
+          <section id="patientrofile">
+            <div className="flex">
+              <img src="" alt="" />
+              <div>
+                <p>Dr. Jose Simmons</p>
+                <p>General Practitioner</p>
+              </div>
+            </div>
+            <div className="flex">
+              <img src="" alt="" />
+              <img src="" alt="" />
+            </div>
+          </section>
+        </section>
         <section id="patient">
-          <article id="diagnosticHistory"></article>
+          <p>Diagnosis History</p>
+
+          <article
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "20px",
+              padding: "20px",
+              borderRadius: "12px",
+            }}
+            id="diagnosisHistory"
+          >
+            {patients[3]?.diagnosis_history.map((diagnosis) => {
+              diastolic.push(diagnosis.blood_pressure.diastolic.value);
+              systolic.push(diagnosis.blood_pressure.systolic.value);
+            })}
+            <BloodPressureChart
+              systolic={systolic}
+              diastolic={diastolic}
+              systolicValue={systolicValue}
+              diastolicValue={diastolicValue}
+              systolicLevels={systolicLevels}
+              diastolicLevels={diastolicLevels}
+            />
+            <div
+              style={{
+                display: "flex",
+                gap: "20px",
+                borderRadius: "12px",
+                justifyContent: "space-between",
+                width: "726px",
+                height: "298px",
+                border: "1px solid blue",
+              }}
+            >
+              <HealthCard
+                bg="#E0F3FA"
+                image={respiratoryRate}
+                parameter="Respiratory Rate"
+                magnitude={` ${patients[3]?.diagnosis_history[0]?.respiratory_rate.value} Bpm`}
+                condition={
+                  patients[3]?.diagnosis_history[0]?.respiratory_rate.levels
+                }
+                style={{ flexGrow: 1 }}
+              />
+              <HealthCard
+                bg="#FFE6E9"
+                image={temperature}
+                parameter="Respiratory Rate"
+                magnitude={` ${patients[3]?.diagnosis_history[0]?.temperature.value} F`}
+                condition={
+                  patients[3]?.diagnosis_history[0]?.respiratory_rate.levels
+                }
+                style={{ flexGrow: 1 }}
+              />
+              <HealthCard
+                bg="#FFE6F1"
+                image={heartBPM}
+                parameter="Respiratory Rate"
+                magnitude={` ${patients[3]?.diagnosis_history[0]?.heart_rate.value} Bpm`}
+                condition={patients[3]?.diagnosis_history[0]?.heart_rate.levels}
+                style={{ flexGrow: 1 }}
+              />
+            </div>
+          </article>
           <article id="patientDetails"></article>
         </section>
       </main>

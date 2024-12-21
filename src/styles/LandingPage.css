@@ -1,0 +1,8 @@
+body {
+  background-color: #f6f7f8;
+  padding: 18px;
+  border: 1px solid red;
+}
+.flex {
+  display: flex;
+}
