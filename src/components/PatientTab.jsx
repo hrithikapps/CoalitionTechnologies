@@ -12,8 +12,11 @@ const PatientTab = ({ patients }) => {
           overflowY: "scroll",
           height: "80vh",
           borderRadius: "12px",
+          marginTop: "20px",
         }}
       >
+        <h3>Patients</h3>
+
         {patients.map((patient, index) => {
           return (
             <div

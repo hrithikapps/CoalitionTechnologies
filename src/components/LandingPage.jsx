@@ -5,7 +5,6 @@ import HealthCard from "./HealthCard";
 import respiratoryRate from "../assets/respiratory rate/respiratory rate.png";
 import temperature from "../assets/temperature/temperature.png";
 import heartBPM from "../assets/HeartBPM/HeartBPM.png";
-import profilePic from "../assets/profilePic/Layer 2.png";
 import BloodPressureChart from "./BloodPressureChart";
 import DiagnosticList from "./DiagnosticList";
 import Profile from "./Profile";
@@ -19,8 +18,7 @@ const LandingPage = () => {
   const [systolicLevels, setSystolicLevels] = useState("");
   const [diastolicLevels, setDiastolicLevels] = useState("");
   const [diagnostic_list, setDiagnostic_list] = useState([]);
-  let [averageDiastolic, setAverageDiastolic] = useState(0);
-  let [averageSystolic, setAverageSystolic] = useState(0);
+
   let diastolic = [];
   let systolic = [];
 
@@ -58,23 +56,6 @@ const LandingPage = () => {
 
   useEffect(() => {
     if (patients?.length > 0) {
-      patients[3]?.diagnosis_history.forEach((diagnosis) => {
-        diastolic.push(diagnosis?.blood_pressure?.diastolic?.value);
-        systolic.push(diagnosis?.blood_pressure?.systolic?.value);
-      });
-    }
-
-    const totalDiastolic =
-      diastolic.length > 0 ? diastolic.reduce((acc, curr) => acc + curr, 0) : 0;
-    const totalSystolic =
-      systolic.length > 0 ? systolic.reduce((acc, curr) => acc + curr, 0) : 0;
-
-    setAverageDiastolic(totalDiastolic / diastolic.length);
-    setAverageSystolic(totalSystolic / systolic.length);
-  }, [patients]);
-
-  useEffect(() => {
-    if (patients?.length > 0) {
       const firstDiagnosis = patients[3]?.diagnosis_history[0];
 
       if (firstDiagnosis?.blood_pressure) {
@@ -89,16 +70,13 @@ const LandingPage = () => {
   }, [patients]);
 
   return (
-    <>
+    <div id="landingPage">
       <Header />
       <main className="flex">
         <section id="allPatients">
-          <h3>Patients</h3>
           <PatientTab patients={patients} />
         </section>
         <section id="patient">
-          <p>Diagnosis History</p>
-
           <article
             style={{
               display: "flex",
@@ -109,11 +87,13 @@ const LandingPage = () => {
             }}
             id="diagnosisHistory"
           >
+            <h3>Diagnosis History</h3>
             {patients[3]?.diagnosis_history.map((diagnosis) => {
               diastolic.push(diagnosis.blood_pressure.diastolic.value);
               systolic.push(diagnosis.blood_pressure.systolic.value);
             })}
             <BloodPressureChart
+              patient={patients[3]}
               systolic={systolic}
               diastolic={diastolic}
               systolicValue={systolicValue}
@@ -173,7 +153,7 @@ const LandingPage = () => {
           </article>
         </section>
       </main>
-    </>
+    </div>
   );
 };
 

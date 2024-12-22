@@ -11,6 +11,8 @@ import {
   Legend,
 } from "chart.js";
 
+
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -22,6 +24,7 @@ ChartJS.register(
 );
 
 const BloodPressureChart = ({
+  patient,
   systolic,
   diastolic,
   systolicValue,
