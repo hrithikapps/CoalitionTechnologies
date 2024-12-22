@@ -7,13 +7,18 @@ import temperature from "../assets/temperature/temperature.png";
 import heartBPM from "../assets/HeartBPM/HeartBPM.png";
 import profilePic from "../assets/profilePic/Layer 2.png";
 import BloodPressureChart from "./BloodPressureChart";
+import DiagnosticList from "./DiagnosticList";
+import Profile from "./Profile";
+import LabResults from "./LabResults";
+import PatientTab from "./PatientTab";
 
 const LandingPage = () => {
-  let [patients, setPatients] = useState([]);
+  const [patients, setPatients] = useState([]);
   const [diastolicValue, setDiastolicValue] = useState(0);
   const [systolicValue, setSystolicValue] = useState(0);
   const [systolicLevels, setSystolicLevels] = useState("");
   const [diastolicLevels, setDiastolicLevels] = useState("");
+  const [diagnostic_list, setDiagnostic_list] = useState([]);
   let [averageDiastolic, setAverageDiastolic] = useState(0);
   let [averageSystolic, setAverageSystolic] = useState(0);
   let diastolic = [];
@@ -78,6 +83,7 @@ const LandingPage = () => {
         setSystolicLevels(firstDiagnosis.blood_pressure.systolic.levels);
 
         setDiastolicLevels(firstDiagnosis.blood_pressure.diastolic.levels);
+        setDiagnostic_list(patients[3]?.diagnostic_list);
       }
     }
   }, [patients]);
@@ -87,20 +93,8 @@ const LandingPage = () => {
       <Header />
       <main className="flex">
         <section id="allPatients">
-          <p>Patients</p>
-          <section id="patientrofile">
-            <div className="flex">
-              <img src="" alt="" />
-              <div>
-                <p>Dr. Jose Simmons</p>
-                <p>General Practitioner</p>
-              </div>
-            </div>
-            <div className="flex">
-              <img src="" alt="" />
-              <img src="" alt="" />
-            </div>
-          </section>
+          <h3>Patients</h3>
+          <PatientTab patients={patients} />
         </section>
         <section id="patient">
           <p>Diagnosis History</p>
@@ -168,7 +162,15 @@ const LandingPage = () => {
               />
             </div>
           </article>
-          <article id="patientDetails"></article>
+          <article>
+            <DiagnosticList diagnostic_list={diagnostic_list} />
+          </article>
+          <article id="patientDetails">
+            <Profile patient={patients[3]} />
+          </article>
+          <article>
+            <LabResults lab_results={patients[3]?.lab_results} />
+          </article>
         </section>
       </main>
     </>
