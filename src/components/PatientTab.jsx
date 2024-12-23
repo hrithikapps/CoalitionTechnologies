@@ -1,5 +1,6 @@
 import React from "react";
 import tripleDots from "../assets/tripleDots/tripleDots.png";
+import search from "../assets/search/search.png";
 
 const PatientTab = ({ patients }) => {
   return (
@@ -10,12 +11,21 @@ const PatientTab = ({ patients }) => {
           backgroundColor: "#FFFFFF",
           display: "block",
           overflowY: "scroll",
-          height: "80vh",
+          height: "90vh",
           borderRadius: "12px",
           marginTop: "20px",
         }}
       >
-        <h3>Patients</h3>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <h3>Patients</h3>
+          <img src={search} alt="search" />
+        </div>
 
         {patients.map((patient, index) => {
           return (
@@ -45,7 +55,7 @@ const PatientTab = ({ patients }) => {
               >
                 <div>
                   <p>{patient.name}</p>
-                  <p>
+                  <p style={{ color: "#707070" }}>
                     {patient.gender} {patient.age}
                   </p>
                 </div>

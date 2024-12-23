@@ -18,6 +18,7 @@ const LandingPage = () => {
   const [systolicLevels, setSystolicLevels] = useState("");
   const [diastolicLevels, setDiastolicLevels] = useState("");
   const [diagnostic_list, setDiagnostic_list] = useState([]);
+  const [bloodPresureLabels, setBloodPressureLabels] = useState([]);
 
   let diastolic = [];
   let systolic = [];
@@ -65,6 +66,12 @@ const LandingPage = () => {
 
         setDiastolicLevels(firstDiagnosis.blood_pressure.diastolic.levels);
         setDiagnostic_list(patients[3]?.diagnostic_list);
+        const bloodPressurelabel = patients[3]?.diagnosis_history.map(
+          (diagnosis) => {
+            return diagnosis.month + " " + diagnosis.year;
+          }
+        );
+        setBloodPressureLabels(bloodPressurelabel);
       }
     }
   }, [patients]);
@@ -93,7 +100,7 @@ const LandingPage = () => {
               systolic.push(diagnosis.blood_pressure.systolic.value);
             })}
             <BloodPressureChart
-              patient={patients[3]}
+              bloodPressurelabels={bloodPresureLabels}
               systolic={systolic}
               diastolic={diastolic}
               systolicValue={systolicValue}
@@ -105,11 +112,9 @@ const LandingPage = () => {
               style={{
                 display: "flex",
                 gap: "20px",
-                borderRadius: "12px",
                 justifyContent: "space-between",
                 width: "726px",
-                height: "298px",
-                border: "1px solid blue",
+                height: "240px",
               }}
             >
               <HealthCard
@@ -125,7 +130,7 @@ const LandingPage = () => {
               <HealthCard
                 bg="#FFE6E9"
                 image={temperature}
-                parameter="Respiratory Rate"
+                parameter="Temperature"
                 magnitude={` ${patients[3]?.diagnosis_history[0]?.temperature.value} F`}
                 condition={
                   patients[3]?.diagnosis_history[0]?.respiratory_rate.levels
@@ -135,7 +140,7 @@ const LandingPage = () => {
               <HealthCard
                 bg="#FFE6F1"
                 image={heartBPM}
-                parameter="Respiratory Rate"
+                parameter="Heart Rate"
                 magnitude={` ${patients[3]?.diagnosis_history[0]?.heart_rate.value} Bpm`}
                 condition={patients[3]?.diagnosis_history[0]?.heart_rate.levels}
                 style={{ flexGrow: 1 }}
@@ -145,6 +150,8 @@ const LandingPage = () => {
           <article>
             <DiagnosticList diagnostic_list={diagnostic_list} />
           </article>
+        </section>
+        <section>
           <article id="patientDetails">
             <Profile patient={patients[3]} />
           </article>

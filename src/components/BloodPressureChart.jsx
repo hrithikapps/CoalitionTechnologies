@@ -11,8 +11,6 @@ import {
   Legend,
 } from "chart.js";
 
-
-
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -24,7 +22,7 @@ ChartJS.register(
 );
 
 const BloodPressureChart = ({
-  patient,
+  bloodPressurelabels,
   systolic,
   diastolic,
   systolicValue,
@@ -32,14 +30,7 @@ const BloodPressureChart = ({
   systolicLevels,
   diastolicLevels,
 }) => {
-  const labels = [
-    "Oct 2023",
-    "Nov 2023",
-    "Dec 2023",
-    "Jan 2024",
-    "Feb 2024",
-    "Mar 2024",
-  ];
+  const labels = [...bloodPressurelabels];
 
   const data = {
     labels: labels,
@@ -95,18 +86,17 @@ const BloodPressureChart = ({
   return (
     <div
       style={{
-        width: "726px",
+        width: "776px",
         height: "298px",
         background: "#F4F0FE 0% 0% no-repeat padding-box",
         borderRadius: "12px",
         display: "flex",
-        alignItems: "center",
         justifyContent: "space-between",
-        padding: "10px",
+        padding: "20px",
       }}
     >
       <div style={{ flex: 1 }}>
-        <h2>Blood Pressure</h2>
+        <h4>Blood Pressure</h4>
         <Line data={data} options={options} height={200} width={400} />
       </div>
       <div
@@ -123,12 +113,12 @@ const BloodPressureChart = ({
           boxSizing: "border-box",
         }}
       >
-        <h3>Systolic</h3>
+        <h4>Systolic</h4>
         <p>{systolicValue}</p>
-        <p>{systolicLevels}</p>
-        <h3>Diastolic</h3>
+        <p style={{ fontSize: "small" }}>{systolicLevels}</p>
+        <h4>Diastolic</h4>
         <p>{diastolicValue} </p>
-        <p>{diastolicLevels}</p>
+        <p style={{ fontSize: "small" }}>{diastolicLevels}</p>
       </div>
     </div>
   );

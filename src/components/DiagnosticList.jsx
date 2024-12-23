@@ -8,7 +8,7 @@ const DiagnosticList = ({ diagnostic_list }) => {
         borderRadius: "12px",
         backgroundColor: "#FFFFFF",
         margin: "auto",
-        maxWidth: "50%",
+        width: "810px",
       }}
     >
       <table
@@ -17,6 +17,7 @@ const DiagnosticList = ({ diagnostic_list }) => {
           overflow: "scroll",
           borderCollapse: "collapse",
           borderRadius: "24px",
+          width: "810px",
         }}
       >
         <thead

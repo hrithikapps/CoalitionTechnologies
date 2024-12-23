@@ -1,4 +1,5 @@
 import React from "react";
+import download from "../assets/download/download.png";
 
 const LabResults = ({ lab_results }) => {
   return (
@@ -7,7 +8,7 @@ const LabResults = ({ lab_results }) => {
         padding: "20px",
         backgroundColor: "#FFFFFF",
         height: "200px",
-        width: "200px",
+        width: "210px",
         borderRadius: "12px",
         overflowY: "scroll",
       }}
@@ -21,10 +22,12 @@ const LabResults = ({ lab_results }) => {
             style={{
               display: "flex",
               padding: "16px",
+              display: "flex",
               justifyContent: "space-between",
             }}
           >
             <p style={{ fontSize: "small" }}>{result}</p>
+            <img src={download} alt="" />
           </div>
         );
       })}

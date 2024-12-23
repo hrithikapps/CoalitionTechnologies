@@ -12,7 +12,7 @@ const Header = () => {
     <>
       <nav>
         <section id="logo">
-          <img style={{ height: "48px", width: "210px" }} src={logo} alt="" />
+          <img style={{ height: "60px", width: "210px" }} src={logo} alt="" />
         </section>
         <section id="group" style={{ display: "flex" }}>
           <div style={{ padding: "10px" }}>

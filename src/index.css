@@ -3,3 +3,9 @@
   padding: 0px;
   margin: 0px;
 }
+:root {
+  --gray-text-colour: #072635;
+  --dark-text-color: #072635;
+  --background-white-color: #ffffff;
+  --background-color: #f6f7f8;
+}
